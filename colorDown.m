@@ -13,45 +13,18 @@ function [rgbImage] = toRGB(hsvImage)
   rgbImage = hsv2rgb(hsvImage);
 end
 
-function [map]=mapDivide(numBins)
-  map = linspace(1/numBins, 1, numBins);
-end
-
-function [reducedVal] = mapReduce(map, pixVal)
-  %Input: map specifies h/s/v, pixVal specifies h/s/v value at pixel
-  %Output: the thresholded value
-  %Suggestion: Binary Search Algorithm
-  numBin = size(map);
-  numBin = numBin(2);
-  if (pixVal <= map(1))
-    reducedVal = map(1);
-  else
-    for t=2:numBin
-      if (pixVal <= map(t))
-	reducedVal = map(t);
-	break;
-      end
-    end
-  end
-  
-end
-
 function [reducedHSV] =reduceHSV(hsvImage, hNum, sNum, vNum)
-  hMap = mapDivide(hNum);
-  sMap = mapDivide(sNum);
-  vMap = mapDivide(vNum);
 
-  h=hsvImage(:,:,1); %Hue channel
-  s=hsvImage(:,:,2);
-  v=hsvImage(:,:,3);
-  
-  sz=size(h);
+    imgsize = size(hsvImage);
+    scales = zeros(1, 1, 3);
+    scales(1, 1,:) = [hNum sNum vNum];
+    scales_rep = repmat(scales, [imgsize(1), imgsize(2), 1]);
+    interm = hsvImage .* scales_rep;
 
-  for pr=1:sz(1)
-    for pc=1:sz(2)
-      reducedHSV(pr,pc,1) = mapReduce(hMap, h(pr,pc));
-      reducedHSV(pr,pc,2) = mapReduce(sMap, s(pr,pc));
-      reducedHSV(pr,pc,3) = mapReduce(vMap, v(pr,pc));
-    end
-  end
+    % cast(interm, 'uint8') is the key function
+    % and this corresponds to deciding which LSB we drop
+    % in hardware, depends on how we decide to represent
+    % HSV values
+    reducedHSV = cast(cast(interm, 'uint8'), 'double') ./ scales_rep; 
+
 end
