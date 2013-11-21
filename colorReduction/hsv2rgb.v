@@ -40,7 +40,10 @@ module hsv2rgb(
 	 parameter quad5 = 5;		//300
 	 
 	 wire [7:0] hQuadrant;
+	 wire [7:0] hQuadrant1;
 	 wire [7:0] hOffset;
+	 
+	 assign hQuadrant1 = (H*6)/256;
 	 
 	 divider hue_div1(
 		.clk(clk),
@@ -58,12 +61,22 @@ module hsv2rgb(
 	 wire [7:0] Q;
 	 wire [7:0] T;
 	 
+	 wire [15:0] hFract1;
+	 wire [15:0] hFract2;
+	 wire [7:0] hFract3;
+	 assign hFract1 = H*6;
+	 assign hFract2 = hFract1<<8;
+	 assign hFract3 = hFract2[15:8];
+	 
+	 
+	 
+	 
 	 wire [7:0] hFract;
 	 assign hFract = ((hOffset*6*265)/256);
 	 
 	 assign P = (V * (255-S))/256;
-	 assign Q = (V * (255-(S*hFract/256)))/256;
-	 assign T = (V * (255-(S*(255-hFract))/256))/256;
+	 assign Q = (V * (255-(S*hFract3/256)))/256;
+	 assign T = (V * (255-(S*(255-hFract3))/256))/256;
 	 
 	 reg[7:0] tR;
 	 reg[7:0] tG;
@@ -76,7 +89,7 @@ module hsv2rgb(
 			tB <= V;
 		end
 		else begin
-			case(hQuadrant)
+			case(hQuadrant1)
 				quad0: begin
 					tR <= V;
 					tG <= T;
