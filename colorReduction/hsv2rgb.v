@@ -39,23 +39,23 @@ module hsv2rgb(
 	 parameter quad4 = 4;		//240
 	 parameter quad5 = 5;		//300
 	 
-	 wire [7:0] hQuadrant;
+//	 wire [7:0] hQuadrant;
 	 wire [7:0] hQuadrant1;
 	 wire [7:0] hOffset;
 	 
 	 assign hQuadrant1 = (H*6)/256;
 	 
-	 divider hue_div1(
-		.clk(clk),
-		.dividend(H),
-		.divisor(43),
-		.quotient(hQuadrant),
-	        // note: the "fractional" output was originally named "remainder" in this
-		// file -- it seems coregen will name this output "fractional" even if
-		// you didn't select the remainder type as fractional.
-		.fractional(hOffset),
-		.rfd(s_rfd)
-		);
+//	 divider hue_div1(
+//		.clk(clk),
+//		.dividend(H),
+//		.divisor(43),
+//		.quotient(hQuadrant),
+//	        // note: the "fractional" output was originally named "remainder" in this
+//		// file -- it seems coregen will name this output "fractional" even if
+//		// you didn't select the remainder type as fractional.
+//		.fractional(hOffset),
+//		.rfd(s_rfd)
+//		);
 	 
 	 wire [7:0] P;
 	 wire [7:0] Q;
@@ -71,8 +71,8 @@ module hsv2rgb(
 	 
 	 
 	 
-	 wire [7:0] hFract;
-	 assign hFract = ((hOffset*6*265)/256);
+//	 wire [7:0] hFract;
+//	 assign hFract = ((hOffset*6*265)/256);
 	 
 	 assign P = (V * (255-S))/256;
 	 assign Q = (V * (255-(S*hFract3/256)))/256;
