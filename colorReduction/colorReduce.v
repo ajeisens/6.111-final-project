@@ -63,7 +63,7 @@ module colorReduce(
 	 assign vThreshold = 8'b11000000;
 	 
 	 //convert rgb to hsv
-	 rgb2hsv1 rgb2hsv(
+	 rgb2hsv rgb2hsv1(
 		.clock(clk), 
 		.reset(reset), 
 		.r(R), 
@@ -77,7 +77,7 @@ module colorReduce(
 	 assign HSV = {H,S,V};
 	 
 	 //the color masking takes place here
-	 colorReduction1 colorReduction(
+	 colorReduction colorReduction1(
 		.HSV(HSV), 
 		.clk(clk), 
 		.hThreshold(hThreshold), 
@@ -87,7 +87,7 @@ module colorReduce(
 	 );
 	 
 	 //convert hsv back to rgb
-	 hsv2rgb1 hsv2rgb(
+	 hsv2rgb hsv2rgb1(
 		.tHSV(tHSV), 
 		.clk(clk), 
 		.tRGB(tRGB)
