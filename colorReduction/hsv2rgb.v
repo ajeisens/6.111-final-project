@@ -51,7 +51,7 @@ module hsv2rgb(
     */
 
       // Should be commented out with Arianas
-	 divider hue_div1(
+   n_divider hue_div1(
 		.clk(clk),
 		.dividend(H),
 		.divisor(43),
