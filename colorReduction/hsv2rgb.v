@@ -38,46 +38,62 @@ module hsv2rgb(
 	 parameter quad3 = 3;		//180
 	 parameter quad4 = 4;		//240
 	 parameter quad5 = 5;		//300
-	 
-//	 wire [7:0] hQuadrant;
+
+   // Should be commented out with Arianas
+	 wire [7:0] hQuadrant;
+   /* Arianas code without the divider*/
+   /*
+    
 	 wire [7:0] hQuadrant1;
 	 wire [7:0] hOffset;
 	 
 	 assign hQuadrant1 = (H*6)/256;
-	 
-//	 divider hue_div1(
-//		.clk(clk),
-//		.dividend(H),
-//		.divisor(43),
-//		.quotient(hQuadrant),
-//	        // note: the "fractional" output was originally named "remainder" in this
-//		// file -- it seems coregen will name this output "fractional" even if
-//		// you didn't select the remainder type as fractional.
-//		.fractional(hOffset),
-//		.rfd(s_rfd)
-//		);
+    */
+
+      // Should be commented out with Arianas
+	 divider hue_div1(
+		.clk(clk),
+		.dividend(H),
+		.divisor(43),
+		.quotient(hQuadrant),
+	        // note: the "fractional" output was originally named "remainder" in this
+		// file -- it seems coregen will name this output "fractional" even if
+		// you didn't select the remainder type as fractional.
+		.fractional(hOffset),
+		.rfd(s_rfd)
+		);
 	 
 	 wire [7:0] P;
 	 wire [7:0] Q;
 	 wire [7:0] T;
-	 
+
+   /* Arianas code without the divider */
+   /*
 	 wire [15:0] hFract1;
 	 wire [15:0] hFract2;
 	 wire [7:0] hFract3;
 	 assign hFract1 = H*6;
 	 assign hFract2 = hFract1<<8;
 	 assign hFract3 = hFract2[15:8];
+    */
 	 
 	 
-	 
-	 
-//	 wire [7:0] hFract;
-//	 assign hFract = ((hOffset*6*265)/256);
+   // To be commented out when using Arianas
+	 wire [7:0] hFract;
+	 assign hFract = ((hOffset*6*265)/256);
 	 
 	 assign P = (V * (255-S))/256;
-	 assign Q = (V * (255-(S*hFract3/256)))/256;
+   // To be commented out when using Arianas
+   	 assign Q = (V * (255-(S*hFract/256)))/256;
+	 assign T = (V * (255-(S*(255-hFract))/256))/256;
+
+   
+   /* Arianas code without the divider */
+   /*
+    	 assign Q = (V * (255-(S*hFract3/256)))/256;
 	 assign T = (V * (255-(S*(255-hFract3))/256))/256;
-	 
+
+    */
 	 reg[7:0] tR;
 	 reg[7:0] tG;
 	 reg[7:0] tB;
