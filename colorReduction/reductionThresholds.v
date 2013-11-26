@@ -22,8 +22,8 @@ module reductionThresholds(
 	 input clk,
 	 input reset,
 	 input select,
-    input [1:0] selector,
-    input [2:0] inputVal,
+    input [1:0] selector, // Selecting H/S/V to change, switch[1:0]
+    input [2:0] inputVal, // Selecting number of shifts to the left
     output reg [7:0] hThreshold,
     output reg [7:0] sThreshold,
     output reg [7:0] vThreshold
@@ -37,7 +37,7 @@ module reductionThresholds(
 	 wire[7:0] ones = 8'b11111111;
 	 wire[2:0] shift;
 	 wire[7:0] threshold;
-	 assign shift = 8-inputVal;
+	 assign shift = 7-inputVal;
 	 assign threshold = ones<<shift;
 	 
 	 
