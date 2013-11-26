@@ -22,9 +22,9 @@ module colorReduce(
     input [23:0] RGB,
 	 input clk,
 	 input reset,
-	 //input select,
-	 //input [1:0]selector,
-	 //input [2:0] inputVal,
+	 input select,
+	 input [1:0]selector,
+	 input [2:0] inputVal,
     output [23:0] tRGB
     );
 	 
@@ -46,21 +46,21 @@ module colorReduce(
 	 wire [7:0] vThreshold;
 
 //  for initial testing, don't bother with inputs	 
-//	 reductionThresholds1 reductionThresholds(
-//		.clk(clk), 
-//		.reset(reset), 
-//		.select(select), 
-//		.selector(selector), 
-//		.inputVal(inputVal), 
-//		.hThreshold(hThreshold), 
-//		.sThreshold(sThreshold), 
-//		.vThreshold(vThreshold)
-//		);
+	 reductionThresholds reductionThresholds1(
+		.clk(clk), 
+		.reset(reset), 
+		.select(select), 
+		.selector(selector), 
+		.inputVal(inputVal), 
+		.hThreshold(hThreshold), 
+		.sThreshold(sThreshold), 
+		.vThreshold(vThreshold)
+		);
 
 	 //comment out when using user inputs
-	 assign hThreshold = 8'b11100000;
-	 assign sThreshold = 8'b11000000;
-	 assign vThreshold = 8'b11000000;
+	 //assign hThreshold = 8'b11110000;
+//	 assign sThreshold = 8'b11100000;
+//	 assign vThreshold = 8'b11100000;
 	 
 	 //convert rgb to hsv
 	 rgb2hsv rgb2hsv1(
