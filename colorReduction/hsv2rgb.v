@@ -105,7 +105,9 @@ module hsv2rgb(
 			tB <= V;
 		end
 		else begin
-			case(hQuadrant1)
+		      /* Arianas code without the divider */
+		   //case(hQuadrant1)
+		   case(hQuadrant)
 				quad0: begin
 					tR <= V;
 					tG <= T;
