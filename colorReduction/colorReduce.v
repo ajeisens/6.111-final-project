@@ -87,7 +87,7 @@ module colorReduce(
 	 );
 	 
 	 //convert hsv back to rgb
-	 d_hsv2rgb hsv2rgb1(
+	 hsv2rgb hsv2rgb1(
 		.tHSV(tHSV), 
 		.clk(clk), 
 		.tRGB(tRGB)
