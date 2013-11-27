@@ -50,7 +50,7 @@ module rgb2hsv(clock, reset, r, g, b, h, s, v);
 		//the s_divider (16/16) has delay 18
 		//the hue_div (16/16) has delay 18
 
-                n_divider hue_div1(
+                n16_divider hue_div1(
 		.clk(clock),
 		.dividend(s_top),
 		.divisor(s_bottom),
@@ -61,7 +61,7 @@ module rgb2hsv(clock, reset, r, g, b, h, s, v);
 		.fractional(s_remainder),
 		.rfd(s_rfd)
 		);
-		n_divider hue_div2(
+		n16_divider hue_div2(
 		.clk(clock),
 		.dividend(h_top),
 		.divisor(h_bottom),
