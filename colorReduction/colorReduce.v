@@ -25,7 +25,7 @@ module colorReduce(
 	 input select,
 	 input [1:0]selector,
 	 input [2:0] inputVal,
-    output [23:0] tRGB
+    output [23:0] uptRGB
     );
 	 
 	 wire [7:0] R;
@@ -41,6 +41,7 @@ module colorReduce(
 	 wire [7:0] V;
 	 wire [23:0] HSV;
 	 wire [23:0] tHSV;
+	 wire [23:0] tRGB;
 	 wire [7:0] hThreshold;
 	 wire [7:0] sThreshold;
 	 wire [7:0] vThreshold;
@@ -91,6 +92,13 @@ module colorReduce(
 		.tHSV(tHSV), 
 		.clk(clk), 
 		.tRGB(tRGB)
+	 );
+	 
+	 contrastBrightness contrastBrightness1(
+		.tRGB(tRGB),
+		.clk(clk),
+		.reset(reset),
+		.uptRGB(uptRGB)
 	 );
 
 
