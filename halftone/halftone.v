@@ -18,7 +18,7 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module halftone(
+module halftone #(parameter frameWidth = 1124)(
     input [10:0] sum,
     input clk,
     input reset,
@@ -28,29 +28,59 @@ module halftone(
     );									//maybe is better to use the done signal because that
 											//signifies when the pixels START moving out
 											
+//Do I get the new frame pixel when the first sum comes in or when the new frame comes in?
+//Will change if there is an initial vertical or horizontal wait
+											
 	 reg first = 0;					//boolean for first block
-	 reg [5:0] countSum = 0;		//count to 12 to get the first pixel, 24 after
+	 reg [2:0] countSum = 0;		//count to 2 to get the first pixel, 4 after
+	 reg [2:0] vertCountSum = 0;//count to 4 for rows between the ones I need
+	 reg [10:0] horiCountSum =0;//count the pixels of the rows I don't use
+	 reg horiWait = 0;
+	 reg vertWait = 0;
 	 reg [10:0] g = 0;				//gradient value
 	 
 	 always @(posedge clk) begin
 		if (newFrame) begin			//if we just recieved a new frame reset
 			first = 1'b1;				//first block signal
+			horiWait = 1'b0;
+			vertWait = 1'b0;
 			ready = 1'b0;				//ready signal
 		end
-		if (first) begin				//on the first block count to 12
-			if (countSum == 6'd12) begin
-				g <= sum;
-				countSum <= 6'b0;
-				first <= 0;
+		if (horiWait) begin
+			if (first) begin				//on the first block count to 12
+				if (countSum == 3'd2) begin
+					g <= sum;
+					countSum <= 3'b0;
+					first <= 0;
+				end
+				else countSum <= countSum + 1;
 			end
-			else countSum <= countSum + 1;
+			else if (~first) begin		//after the first block count to 24
+				if (countSum == 3'd4) begin
+					g <= sum;
+					countSum <= 3'b0;
+				end
+				else countSum <= countSum + 1;
+			end
+			if (horiCountSum == frameWidth) begin
+				horiCountSum = 11'b0;
+				vertWait = 1'b1;
+				horiWait = 1'b0;
+			end
+			else horiCountSum = horiCountSum + 1;
 		end
-		else if (~first) begin		//after the first block count to 24
-			if (countSum == 6'd24) begin
-				g <= sum;
-				countSum <= 6'b0;
+		if (vertWait) begin
+			if (horiCountSum == frameWidth) begin
+				horiCountSum = 11'b0;
+				if (vertCountSum == 3'd5) begin
+					vertCountSum = 3'b0;
+					first = 1'b1;
+					horiWait = 1'b1;
+					vertWait = 1'b0;
+				end
+				else vertCountSum = vertCountSum + 1;
 			end
-			else countSum <= countSum + 1;
+			else horiCountSum = horiCountSum + 1;
 		end
 	 end
 	 
