@@ -1,8 +1,10 @@
-labRGB = imread('pictures/dark_knight.jpg');
+labRGB = imread('pictures/whiteCat.jpg');
 
 [edgRGB, edgSel] = edgeDetect(labRGB, 90);
 redRGB = colorDown(labRGB, 20, 10, 10);
 fusedRGB = fuseRGB(edgSel, edgRGB, redRGB);
+figure, imshow(edgRGB);
+figure, imshow(redRGB);
 figure, imshow( fusedRGB );
 
 % source: http://www.mathworks.com/help/images/reducing-the-number-of-colors-in-an-image.html
@@ -23,3 +25,5 @@ ditheredX = dither( fusedRGB, bwMap );
 % figure, imshow( ditheredX, bwMap );
 rgbConverted = ind2rgb( ditheredX, bwMap);
 figure, imshow( rgbConverted );
+
+figure, imshow( fusedRGB, bwMap);
